@@ -1,14 +1,14 @@
 {
-    "version": 2,
-    "builds": [
-      { "src": "package.json", "use": "@vercel/next" }
-    ],
-    "routes": [
-      { "src": "/api/og", "dest": "/api/og" },
-      { "src": "/api/answerOG", "dest": "/api/answerOG" },
-      { "src": "/api/start-game", "dest": "/api/start-game" },
-      { "src": "/api/infoScreen", "dest": "/api/infoScreen" },
-      { "src": "/(.*)", "dest": "/$1" }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@vercel/next" }
+  ],
+  "routes": [
+    { "src": "/api/og", "dest": "/api/og" },
+    { "src": "/api/answerOG", "dest": "/api/answerOG" },
+    { "src": "/api/start-game", "dest": "/api/start-game" },
+    { "src": "/api/infoScreen", "dest": "/api/infoScreen" },
+    { "src": "/api/infoOG", "dest": "/api/infoOG" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
