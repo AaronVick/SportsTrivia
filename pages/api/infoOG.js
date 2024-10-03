@@ -16,8 +16,9 @@ export default function handler(req) {
           height: '100%',
           backgroundColor: '#1a202c',
           color: '#fff',
-          alignItems: 'center',
-          justifyContent: 'center',
+          flexDirection: 'column', // Center vertically
+          justifyContent: 'center', // Center vertically
+          alignItems: 'center', // Center horizontally
           fontFamily: '"Arial", sans-serif',
           textAlign: 'center',
           padding: '20px',
@@ -26,9 +27,9 @@ export default function handler(req) {
         <h1
           style={{
             fontSize: '48px',
-            lineHeight: '1.4', // Increase line spacing for better readability
+            lineHeight: '1.4', // Adjust line height for better readability
             maxWidth: '80%',
-            whiteSpace: 'pre-line', // Allows proper line breaks for \n
+            whiteSpace: 'pre-line', // Allows line breaks
           }}
         >
           {message}
