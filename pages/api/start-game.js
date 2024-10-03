@@ -1,5 +1,3 @@
-import { fetchQuestion } from './utils/trivia'; // Assume this function fetches a trivia question
-
 export default async function handler(req, res) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://your-vercel-app-url.vercel.app';
   
@@ -32,7 +30,9 @@ export default async function handler(req, res) {
     }
 
     // Fetch new question
-    const questionData = await fetchQuestion();
+    const response = await fetch('https://opentdb.com/api.php?amount=1&category=21&type=multiple');
+    const data = await response.json();
+    const questionData = data.results[0];
     const { question, correct_answer, incorrect_answers } = questionData;
 
     // Shuffle answers
