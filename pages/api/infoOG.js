@@ -16,7 +16,7 @@ export default function handler(req) {
           height: '100%',
           backgroundColor: '#1a202c',
           color: '#fff',
-          flexDirection: 'column', // Center vertically
+          flexDirection: 'column',
           justifyContent: 'center', // Center vertically
           alignItems: 'center', // Center horizontally
           fontFamily: '"Arial", sans-serif',
@@ -27,7 +27,7 @@ export default function handler(req) {
         <h1
           style={{
             fontSize: '48px',
-            lineHeight: '1.4', // Adjust line height for better readability
+            lineHeight: '1.4',
             maxWidth: '80%',
             whiteSpace: 'pre-line', // Allows line breaks
           }}

@@ -1,5 +1,4 @@
 import { ImageResponse } from '@vercel/og';
-import axios from 'axios';
 
 export const config = {
   runtime: 'edge',
@@ -11,8 +10,9 @@ export default async function handler(req) {
   
   try {
     console.log('Fetching trivia question...');
-    
-    const { data } = await axios.get('https://opentdb.com/api.php?amount=1&category=21&type=multiple');
+
+    const response = await fetch('https://opentdb.com/api.php?amount=1&category=21&type=multiple');
+    const data = await response.json();
     const questionData = data.results[0];
 
     const question = questionData.question;

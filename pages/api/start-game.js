@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       <head>
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content="${baseUrl}/api/og" />
-        <meta property="fc:frame:button:1" content="Start Game" />
+        <meta property="fc:frame:button:1" content="Next Question" />
         <meta property="fc:frame:post_url" content="${baseUrl}/api/og" />
       </head>
       <body></body>
