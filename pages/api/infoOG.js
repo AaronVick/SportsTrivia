@@ -5,8 +5,7 @@ export const config = {
 };
 
 export default function handler(req) {
-  // Message for the introductory screen
-  const message = "There are 20 random sports questions. Can you get all 20 right?";
+  const message = "There are 20 random sports questions.\n\nCan you get all 20 right?";
 
   return new ImageResponse(
     (
@@ -19,10 +18,21 @@ export default function handler(req) {
           color: '#fff',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '40px',
+          fontFamily: '"Arial", sans-serif',
+          textAlign: 'center',
+          padding: '20px',
         }}
       >
-        <h1>{message}</h1>
+        <h1
+          style={{
+            fontSize: '48px',
+            lineHeight: '1.4', // Increase line spacing for better readability
+            maxWidth: '80%',
+            whiteSpace: 'pre-line', // Allows proper line breaks for \n
+          }}
+        >
+          {message}
+        </h1>
       </div>
     ),
     {

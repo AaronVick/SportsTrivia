@@ -3,12 +3,17 @@ export default async function handler(req, res) {
   
   try {
     console.log('Start game endpoint hit');
+    
+    // CORS Headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    
     const html = `
     <!DOCTYPE html>
     <html>
       <head>
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="${baseUrl}/api/infoScreen" />
+        <meta property="fc:frame:image" content="${baseUrl}/api/og" />
         <meta property="fc:frame:button:1" content="Start Game" />
         <meta property="fc:frame:post_url" content="${baseUrl}/api/og" />
       </head>

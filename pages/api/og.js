@@ -8,10 +8,16 @@ export const config = {
 export default async function handler(req) {
   const { searchParams } = new URL(req.url);
   const message = searchParams.get('message');
-
+  
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://your-vercel-app-url.vercel.app';
 
   try {
+    // CORS Headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    
+    console.log('Fetching trivia question...');
+    
     const { data } = await axios.get('https://opentdb.com/api.php?amount=1&category=21&type=multiple');
     const questionData = data.results[0];
 
@@ -21,6 +27,8 @@ export default async function handler(req) {
 
     // Shuffle answers
     const answers = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+
+    console.log('Trivia question fetched successfully:', question);
 
     return new ImageResponse(
       (
@@ -34,7 +42,7 @@ export default async function handler(req) {
       { width: 1200, height: 630 }
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error fetching trivia question:', error);
 
     return new ImageResponse(
       (
