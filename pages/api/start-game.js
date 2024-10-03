@@ -29,20 +29,38 @@ export default async function handler(req, res) {
       return res.status(200).send(html);
     }
 
-    // Fetch new question
-    const response = await fetch('https://opentdb.com/api.php?amount=1&category=21&type=multiple');
-    const data = await response.json();
-    
-    if (!data.results || data.results.length === 0) {
-      throw new Error('No question data received from API');
+    // Function to validate question data
+    const isValidQuestionData = (data) => {
+      return data && 
+             data.question && 
+             typeof data.question === 'string' &&
+             data.correct_answer &&
+             typeof data.correct_answer === 'string' &&
+             Array.isArray(data.incorrect_answers) &&
+             data.incorrect_answers.length > 0;
+    };
+
+    // Fetch new question with retry logic
+    let questionData;
+    let retries = 3;
+    while (retries > 0) {
+      const response = await fetch('https://opentdb.com/api.php?amount=1&category=21&type=multiple');
+      const data = await response.json();
+      
+      if (data.results && data.results.length > 0 && isValidQuestionData(data.results[0])) {
+        questionData = data.results[0];
+        break;
+      }
+      
+      retries--;
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retrying
     }
 
-    const questionData = data.results[0];
+    if (!questionData) {
+      throw new Error('Failed to fetch a valid question after multiple attempts');
+    }
+
     const { question, correct_answer, incorrect_answers } = questionData;
-
-    if (!question || !correct_answer || !incorrect_answers || incorrect_answers.length === 0) {
-      throw new Error('Invalid question data received from API');
-    }
 
     // Select only one wrong answer
     const wrongAnswer = incorrect_answers[Math.floor(Math.random() * incorrect_answers.length)];
