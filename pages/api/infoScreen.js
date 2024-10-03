@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     <html>
       <head>
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="${baseUrl}/api/infoOG" />
+        <meta property="fc:frame:image" content="${baseUrl}/20questions.png" />
         <meta property="fc:frame:button:1" content="Start Game" />
         <meta property="fc:frame:button:2" content="Share" />
         <meta property="fc:frame:button:2:action" content="link" />

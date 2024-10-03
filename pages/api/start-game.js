@@ -1,3 +1,5 @@
+import he from 'he';
+
 export default async function handler(req, res) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://your-vercel-app-url.vercel.app';
   
@@ -31,9 +33,10 @@ export default async function handler(req, res) {
 
     // Function to validate question data
     const isValidQuestionData = (data) => {
+      const decodedQuestion = he.decode(data.question);
       return data && 
-             data.question && 
-             typeof data.question === 'string' &&
+             decodedQuestion &&
+             decodedQuestion.length <= 150 &&
              data.correct_answer &&
              typeof data.correct_answer === 'string' &&
              Array.isArray(data.incorrect_answers) &&
@@ -42,7 +45,7 @@ export default async function handler(req, res) {
 
     // Fetch new question with retry logic
     let questionData;
-    let retries = 3;
+    let retries = 5; // Increased retries to account for skipping long questions
     while (retries > 0) {
       const response = await fetch('https://opentdb.com/api.php?amount=1&category=21&type=multiple');
       const data = await response.json();
@@ -74,9 +77,9 @@ export default async function handler(req, res) {
     <html>
       <head>
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="${baseUrl}/api/og?message=${encodeURIComponent(question)}" />
-        <meta property="fc:frame:button:1" content="${answers[0]}" />
-        <meta property="fc:frame:button:2" content="${answers[1]}" />
+        <meta property="fc:frame:image" content="${baseUrl}/api/og?message=${encodeURIComponent(he.decode(question))}" />
+        <meta property="fc:frame:button:1" content="${he.decode(answers[0])}" />
+        <meta property="fc:frame:button:2" content="${he.decode(answers[1])}" />
         <meta property="fc:frame:post_url" content="${baseUrl}/api/answerOG" />
         <meta property="fc:frame:state" content="${encodeURIComponent(JSON.stringify({ 
           totalAnswered, 
