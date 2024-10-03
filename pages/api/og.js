@@ -1,4 +1,5 @@
 import { ImageResponse } from '@vercel/og';
+import he from 'he';
 
 export const config = {
   runtime: 'edge',
@@ -6,9 +7,12 @@ export const config = {
 
 export default async function handler(req) {
   const { searchParams } = new URL(req.url);
-  const message = searchParams.get('message');
+  let message = searchParams.get('message');
   
   try {
+    // Decode HTML entities
+    message = he.decode(message);
+
     return new ImageResponse(
       (
         <div style={{ 

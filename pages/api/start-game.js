@@ -35,8 +35,11 @@ export default async function handler(req, res) {
     const questionData = data.results[0];
     const { question, correct_answer, incorrect_answers } = questionData;
 
-    // Shuffle answers
-    const answers = [correct_answer, ...incorrect_answers].sort(() => Math.random() - 0.5);
+    // Select only one wrong answer
+    const wrongAnswer = incorrect_answers[Math.floor(Math.random() * incorrect_answers.length)];
+
+    // Randomly order the correct and wrong answer
+    const answers = [correct_answer, wrongAnswer].sort(() => Math.random() - 0.5);
     const correctIndex = answers.indexOf(correct_answer) + 1; // +1 because button indices start at 1
 
     const html = `
@@ -47,8 +50,6 @@ export default async function handler(req, res) {
         <meta property="fc:frame:image" content="${baseUrl}/api/og?message=${encodeURIComponent(question)}" />
         <meta property="fc:frame:button:1" content="${answers[0]}" />
         <meta property="fc:frame:button:2" content="${answers[1]}" />
-        <meta property="fc:frame:button:3" content="${answers[2]}" />
-        <meta property="fc:frame:button:4" content="${answers[3]}" />
         <meta property="fc:frame:post_url" content="${baseUrl}/api/answerOG" />
         <meta property="fc:frame:state" content="${encodeURIComponent(JSON.stringify({ 
           totalAnswered, 

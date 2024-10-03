@@ -7,9 +7,7 @@ export default async function handler(req, res) {
   const isCorrect = buttonIndex === correctIndex;
   const newCorrectCount = correctCount + (isCorrect ? 1 : 0);
   const newTotalAnswered = totalAnswered + 1;
-  const message = isCorrect 
-    ? `Correct! The answer was ${correctTitle}.`
-    : `Wrong. The correct answer was ${correctTitle}.`;
+  const message = `${isCorrect ? 'Correct' : 'Wrong'}! The answer was ${correctTitle}.\n\nYou've answered ${newTotalAnswered} out of 20 questions.`;
 
   const html = `
   <!DOCTYPE html>
