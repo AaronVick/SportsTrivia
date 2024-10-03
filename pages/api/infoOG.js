@@ -17,19 +17,20 @@ export default function handler(req) {
           backgroundColor: '#1a202c',
           color: '#fff',
           flexDirection: 'column',
-          justifyContent: 'center', // Center vertically
-          alignItems: 'center', // Center horizontally
+          justifyContent: 'center',
+          alignItems: 'center',
           fontFamily: '"Arial", sans-serif',
           textAlign: 'center',
-          padding: '20px',
+          padding: '40px',
         }}
       >
         <h1
           style={{
-            fontSize: '48px',
-            lineHeight: '1.4',
-            maxWidth: '80%',
-            whiteSpace: 'pre-line', // Allows line breaks
+            fontSize: '64px',
+            lineHeight: '1.2',
+            margin: '0',
+            padding: '0',
+            whiteSpace: 'pre-wrap',
           }}
         >
           {message}

@@ -1,3 +1,5 @@
+import { fetchQuestion } from './utils/trivia'; // Assume this function fetches a trivia question
+
 export default async function handler(req, res) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://your-vercel-app-url.vercel.app';
   
@@ -8,23 +10,61 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
     
+    const { untrustedData } = req.body;
+    const { totalAnswered = 0, correctCount = 0 } = JSON.parse(decodeURIComponent(untrustedData?.state || '{}'));
+
+    if (totalAnswered >= 20) {
+      // Game over, show final score
+      const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta property="fc:frame" content="vNext" />
+          <meta property="fc:frame:image" content="${baseUrl}/api/og?message=${encodeURIComponent(`Game Over! You got ${correctCount} out of 20 correct!`)}" />
+          <meta property="fc:frame:button:1" content="Play Again" />
+          <meta property="fc:frame:post_url" content="${baseUrl}/api/infoScreen" />
+        </head>
+        <body></body>
+      </html>`;
+      
+      res.setHeader('Content-Type', 'text/html');
+      return res.status(200).send(html);
+    }
+
+    // Fetch new question
+    const questionData = await fetchQuestion();
+    const { question, correct_answer, incorrect_answers } = questionData;
+
+    // Shuffle answers
+    const answers = [correct_answer, ...incorrect_answers].sort(() => Math.random() - 0.5);
+    const correctIndex = answers.indexOf(correct_answer) + 1; // +1 because button indices start at 1
+
     const html = `
     <!DOCTYPE html>
     <html>
       <head>
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="${baseUrl}/api/og" />
-        <meta property="fc:frame:button:1" content="Next Question" />
-        <meta property="fc:frame:post_url" content="${baseUrl}/api/og" />
+        <meta property="fc:frame:image" content="${baseUrl}/api/og?message=${encodeURIComponent(question)}" />
+        <meta property="fc:frame:button:1" content="${answers[0]}" />
+        <meta property="fc:frame:button:2" content="${answers[1]}" />
+        <meta property="fc:frame:button:3" content="${answers[2]}" />
+        <meta property="fc:frame:button:4" content="${answers[3]}" />
+        <meta property="fc:frame:post_url" content="${baseUrl}/api/answerOG" />
+        <meta property="fc:frame:state" content="${encodeURIComponent(JSON.stringify({ 
+          totalAnswered, 
+          correctCount, 
+          correctTitle: correct_answer,
+          correctIndex
+        }))}" />
       </head>
       <body></body>
     </html>`;
     
     res.setHeader('Content-Type', 'text/html');
     res.status(200).send(html);
-    console.log('Start game HTML sent successfully');
+    console.log('Question sent successfully');
   } catch (error) {
-    console.error('Error starting game:', error);
+    console.error('Error in start game:', error);
     
     const errorHtml = `
     <!DOCTYPE html>
@@ -40,6 +80,5 @@ export default async function handler(req, res) {
     
     res.setHeader('Content-Type', 'text/html');
     res.status(500).send(errorHtml);
-    console.log('Error occurred in start game:', error);
   }
 }
