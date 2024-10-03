@@ -16,12 +16,10 @@ export default function handler(req) {
           height: '100%',
           backgroundColor: '#1a202c',
           color: '#fff',
-          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           fontFamily: '"Arial", sans-serif',
           textAlign: 'center',
-          padding: '40px',
         }}
       >
         <h1
@@ -29,7 +27,8 @@ export default function handler(req) {
             fontSize: '64px',
             lineHeight: '1.2',
             margin: '0',
-            padding: '0',
+            padding: '40px',
+            maxWidth: '90%',
             whiteSpace: 'pre-wrap',
           }}
         >
