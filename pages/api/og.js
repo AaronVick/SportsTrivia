@@ -24,6 +24,15 @@ export default async function handler(req) {
 
     console.log('Trivia question fetched successfully:', question);
 
+    // Meta tags for Farcaster frame
+    const metaTags = `
+      <meta property="fc:frame" content="vNext" />
+      <meta property="fc:frame:image" content="/api/og?message=${encodeURIComponent(question)}" />
+      <meta property="fc:frame:button:1" content="${answers[0]}" />
+      <meta property="fc:frame:button:2" content="${answers[1]}" />
+      <meta property="fc:frame:button:3" content="${answers[2]}" />
+    `;
+
     return new ImageResponse(
       (
         <div style={{ display: 'flex', backgroundColor: '#4CAF50', width: '100%', height: '100%', flexDirection: 'column', padding: '20px' }}>
